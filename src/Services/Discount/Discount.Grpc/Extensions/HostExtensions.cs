@@ -42,7 +42,7 @@ namespace Discount.Grpc.Extensions
                 catch (NpgsqlException ex)
                 {
                     logger.LogError(ex, "An error occurred while migrating the postresql database");
-                    if (retryForAvailability < retry)
+                    if (retryForAvailability < 50)
                     {
                         retryForAvailability++;
                         System.Threading.Thread.Sleep(2000);
