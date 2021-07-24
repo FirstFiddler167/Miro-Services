@@ -17,7 +17,7 @@
         "ClientWhitelist": [],
         "EnableRateLimiting": true,
         "Period": "5s",
-        "PeriodTimespan": 1,
+        "PeriodTimespan": 10,
         "Limit": 1
       }
     },
@@ -125,6 +125,19 @@
         }
       ],
       "UpstreamPathTemplate": "/Order/{userName}",
+      "UpstreamHttpMethod": [ "GET" ]
+    },
+    //Shopping.Aggregator API
+    {
+      "DownstreamPathTemplate": "/api/v1/Shopping/{userName}",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "shopping.aggregator",
+          "Port": "80"
+        }
+      ],
+      "UpstreamPathTemplate": "/shopping/{userName}",
       "UpstreamHttpMethod": [ "GET" ]
     }
   ],

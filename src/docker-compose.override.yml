@@ -122,6 +122,7 @@ services:
 
 
   ocelotapigw:
+    container_name: ocelotapigw
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
     depends_on:
@@ -129,6 +130,21 @@ services:
       - basket.api
       - discount.api
       - ordering.api
+      - shopping.aggregator
     ports:
       - "8000:80"
+
+  shopping.aggregator:
+    container_name: shopping.aggregator
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - "ApiSettings:CatalogUrl=http://catalog.api"
+      - "ApiSettings:BasketUrl=http://basket.api"
+      - "ApiSettings:OrderingUrl=http://ordering.api"
+    depends_on:
+      - catalog.api
+      - basket.api
+      - ordering.api
+    ports:
+      - "8006:80"
 
