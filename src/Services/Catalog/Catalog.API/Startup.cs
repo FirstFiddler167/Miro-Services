@@ -1,5 +1,6 @@
 using Catalog.API.Data;
 using Catalog.API.Repositories;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
@@ -7,10 +8,12 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
 
 namespace Catalog.API
@@ -31,6 +34,21 @@ namespace Catalog.API
             services.AddControllers();
             services.AddScoped<ICatalogContext, CatalogContext>();
             services.AddScoped<IProductRepository, ProductRepository>();
+            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+                   .AddJwtBearer(options =>
+                   {
+                       options.TokenValidationParameters = new TokenValidationParameters
+                       {
+                           ValidateIssuer = true,
+                           ValidateAudience = true,
+                           ValidateLifetime = true,
+                           ValidateIssuerSigningKey = true,
+                           ValidIssuer = Configuration["JwtTokenConfig:ValidIssuer"],
+                           ValidAudience = Configuration["JwtTokenConfig:ValidAudience"],
+                           IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration["JwtTokenConfig:Secret"])),
+                           ClockSkew = TimeSpan.Zero
+                       };
+                   });
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "Catalog.API", Version = "v1" });
@@ -49,6 +67,7 @@ namespace Catalog.API
 
             app.UseRouting();
 
+            app.UseAuthentication();
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>

@@ -1,6 +1,7 @@
 ﻿using Catalog.API.Entities;
 using Catalog.API.Helpers;
 using Catalog.API.Repositories;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
@@ -25,6 +26,7 @@ namespace Catalog.API.Controllers
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
             _logger.CustomLogInformation();
         }
+        [Authorize]
         [HttpGet]
         [ProducesResponseType(typeof(IEnumerable<Product>), (int)HttpStatusCode.OK)]
         public async Task<ActionResult<IEnumerable<Product>>> GetProducts()

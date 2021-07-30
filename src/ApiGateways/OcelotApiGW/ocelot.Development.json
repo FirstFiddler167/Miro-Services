@@ -19,7 +19,8 @@
         "Period": "5s",
         "PeriodTimespan": 10,
         "Limit": 1
-      }
+      },
+      "SwaggerKey": "Catalog"
     },
     {
       "DownstreamPathTemplate": "/api/v1/Catalog/{id}",
@@ -143,5 +144,17 @@
   ],
   "GlobalConfiguration": {
     "BaseUrl": "http://localhost:8000"
-  }
+  },
+  "SwaggerEndPoints": [
+    {
+      "Key": "Catalog",
+      "Config": [
+        {
+          "Name": "Catalog API",
+          "Version": "v1",
+          "Url": "http://catalog.api/swagger/v1/swagger.json"
+        }
+      ]
+    }
+  ]
 }

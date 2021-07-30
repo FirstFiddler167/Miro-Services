@@ -36,6 +36,15 @@ services:
     ports:
         - "15000:1433"
 
+  identydb:
+    container_name: identydb
+    environment:
+        SA_PASSWORD: "N@tional55"
+        ACCEPT_EULA: "Y"
+    restart: always
+    ports:
+        - "15001:1433"
+
   pgadmin:
     container_name: pgadmin
     environment:
@@ -63,6 +72,12 @@ services:
     ports:
       - "5672:5672"
       - "15672:15672"
+
+  camunda:
+    container_name: camunda
+    restart: always
+    ports:
+      - "8010:8080"
 
   catalog.api:
     container_name: catalog.api
@@ -147,4 +162,13 @@ services:
       - ordering.api
     ports:
       - "8006:80"
+
+
+  identity.api:
+    container_name: identity.api
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      -  "ConnectionStrings:IdentityConnectionString=Data Source=identydb;Database=IdentityDb;User ID=sa;Password=N@tional55;Connect Timeout=30;Encrypt=False;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False"
+    ports:
+      - "8007:80"
 
