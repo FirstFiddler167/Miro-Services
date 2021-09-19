@@ -31,8 +31,8 @@ services:
     environment:
         RABBITMQ_DEFAULT_VHOST: my_vhost
   
-  camunda:
-    image: camunda/camunda-bpm-platform:latest
+  #camunda:
+  #  image: camunda/camunda-bpm-platform:latest
 
   catalog.api:
     image: ${DOCKER_REGISTRY-}catalogapi

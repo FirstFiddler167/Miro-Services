@@ -48,7 +48,9 @@ namespace Identity.API.Controllers
                     new Claim(ClaimTypes.Name, user.UserName),
                     new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
                 };
-
+                var userClaims = await _userManager.GetClaimsAsync(user);
+                if (userClaims != null && userClaims.Count > 0)
+                    authClaims.AddRange(userClaims);
                 foreach (var userRole in userRoles)
                 {
                     authClaims.Add(new Claim(ClaimTypes.Role, userRole));
@@ -64,8 +66,8 @@ namespace Identity.API.Controllers
                 }
                 return Ok(new
                 {
-                    accessToken = AccessToken,
-                    refreshToken = RefreshToken
+                    access_token = AccessToken,
+                    refresh_token = RefreshToken
                 });
             }
             return Unauthorized();
@@ -171,5 +173,11 @@ namespace Identity.API.Controllers
             }
             return NoContent();
         }
+        [HttpGet, Route("ValidateAuth")]
+        public async Task<IActionResult> ValidateAuth()
+        {
+            return await Task.FromResult(_tokenService.ValidateToken(HttpContext.Request.Headers["Authorization"].ToString().Split(' ')[1])) ? Ok() : BadRequest();
+        }
+             
     }
 }

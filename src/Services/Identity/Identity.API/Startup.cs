@@ -56,9 +56,20 @@ namespace Identity.API
                             ValidIssuer = Configuration["JwtTokenConfig:ValidIssuer"],
                             ValidAudience = Configuration["JwtTokenConfig:ValidAudience"],
                             IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration["JwtTokenConfig:Secret"])),
-                            ClockSkew = TimeSpan.Zero 
+                            ClockSkew = TimeSpan.Zero
                         };
                     });
+            services.AddIdentityServer()
+                    .AddDeveloperSigningCredential()
+                    .AddOperationalStore(options =>
+                    {
+                        options.EnableTokenCleanup = true;
+                        options.TokenCleanupInterval = 30;
+                    })
+                    .AddInMemoryApiScopes(Configuration.GetSection("IdentityServer:ApiScopes"))
+                    .AddInMemoryApiResources(IdentityServerConfig.GetApiResources())
+                    .AddInMemoryClients(IdentityServerConfig.GetClients());
+                    
             services.AddAutoMapper(typeof(Startup));
             services.AddControllers();
             services.AddSwaggerGen(c =>
@@ -76,9 +87,10 @@ namespace Identity.API
                 app.UseSwagger();
                 app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "Identity.API v1"));
             }
-
+            
             app.UseRouting();
-            app.UseAuthentication();
+            app.UseIdentityServer();
+            //app.UseAuthentication();
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>

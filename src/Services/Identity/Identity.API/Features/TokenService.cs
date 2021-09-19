@@ -63,5 +63,33 @@ namespace Identity.API.Features
                 throw new SecurityTokenException("Invalid token");
             return principal;
         }
+
+        public bool ValidateToken(string authToken)
+        {
+            var tokenHandler = new JwtSecurityTokenHandler();
+            var validationParameters = new TokenValidationParameters()
+            {
+                ValidateIssuer = true,
+                ValidateAudience = true,
+                ValidAudience = jwtTokenConfig.ValidAudience,
+                ValidIssuer = jwtTokenConfig.ValidIssuer,
+                IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtTokenConfig.Secret))
+            };
+            SecurityToken validatedToken;
+            try
+            {
+                var principal = tokenHandler.ValidateToken(authToken, validationParameters, out validatedToken);
+                if (principal.Identity.IsAuthenticated)
+                    return true;
+                return false;
+            }
+            catch (Exception)
+            {
+
+                return false;
+            }
+            
+           
+        }
     }
 }

@@ -73,11 +73,11 @@ services:
       - "5672:5672"
       - "15672:15672"
 
-  camunda:
-    container_name: camunda
-    restart: always
-    ports:
-      - "8010:8080"
+  #camunda:
+  #  container_name: camunda
+  #  restart: always
+  #  ports:
+  #    - "8010:8080"
 
   catalog.api:
     container_name: catalog.api

@@ -26,14 +26,11 @@ namespace Catalog.API.Controllers
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
             _logger.CustomLogInformation();
         }
-        [Authorize]
+        //[Authorize(Policy = "PublicSecure")]
         [HttpGet]
         [ProducesResponseType(typeof(IEnumerable<Product>), (int)HttpStatusCode.OK)]
-        public async Task<ActionResult<IEnumerable<Product>>> GetProducts()
-        {
-            var products = await _repository.GetProducts();
-            return Ok(products);
-        }
+        public async Task<ActionResult<IEnumerable<Product>>> GetProducts() =>
+            Ok(await _repository.GetProducts());
         [HttpGet("{id:length(24)}", Name = "GetProduct")]
         [ProducesResponseType((int)HttpStatusCode.NotFound)]
         [ProducesResponseType(typeof(Product), (int)HttpStatusCode.OK)]
