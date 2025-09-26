@@ -21,6 +21,6 @@ spec:
         io.kompose.service: ordering-api
     spec:
       containers:
-        - image: orderingapi
-          name: ordering.api
+        - image: firstfiddler01/orderingapi:v1
+          name: ordering-api
       restartPolicy: Always

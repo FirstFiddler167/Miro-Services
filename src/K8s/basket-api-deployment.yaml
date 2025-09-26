@@ -21,6 +21,6 @@ spec:
         io.kompose.service: basket-api
     spec:
       containers:
-        - image: basketapi
-          name: basket.api
+        - image: firstfiddler01/basketapi:v1
+          name: basket-api
       restartPolicy: Always

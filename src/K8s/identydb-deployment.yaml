@@ -21,9 +21,21 @@ spec:
         io.kompose.service: identydb
     spec:
       containers:
-        - env:
+        - name: identydb
+          image: mcr.microsoft.com/mssql/server:2022-latest
+          ports:
+            - containerPort: 1433
+          env:
+            - name: ACCEPT_EULA
+              value: "Y"
             - name: SA_PASSWORD
-              value: N@tional55
-          image: mcr.microsoft.com/mssql/server
-          name: identydb
+              value: "N@tional55"
+            - name: MSSQL_PID
+              value: "Developer"
+          volumeMounts:
+            - name: identydb-storage
+              mountPath: /var/opt/mssql
+      volumes:
+        - name: identydb-storage
+          emptyDir: {}
       restartPolicy: Always

@@ -21,6 +21,6 @@ spec:
         io.kompose.service: ocelotapigw
     spec:
       containers:
-        - image: ocelotapigw
+        - image: firstfiddler01/ocelotapigw:v1
           name: ocelotapigw
       restartPolicy: Always

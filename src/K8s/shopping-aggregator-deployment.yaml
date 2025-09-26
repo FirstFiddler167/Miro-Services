@@ -21,6 +21,6 @@ spec:
         io.kompose.service: shopping-aggregator
     spec:
       containers:
-        - image: shoppingaggregator
-          name: shopping.aggregator
+        - image: firstfiddler01/shoppingaggregator:v1
+          name: shopping-aggregator
       restartPolicy: Always

@@ -21,6 +21,6 @@ spec:
         io.kompose.service: discount-grpc
     spec:
       containers:
-        - image: discountgrpc
-          name: discount.grpc
+        - image: firstfiddler01/discountgrpc:v1
+          name: discount-grpc
       restartPolicy: Always

@@ -21,6 +21,6 @@ spec:
         io.kompose.service: identity-api
     spec:
       containers:
-        - image: identityapi
-          name: identity.api
+        - image: firstfiddler01/identityapi:v1
+          name: identity-api
       restartPolicy: Always

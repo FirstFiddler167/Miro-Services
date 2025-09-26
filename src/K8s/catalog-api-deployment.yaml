@@ -21,6 +21,6 @@ spec:
         io.kompose.service: catalog-api
     spec:
       containers:
-        - image: catalogapi
-          name: catalog.api
+        - image: firstfiddler01/catalogapi:v1
+          name: catalog-api
       restartPolicy: Always

@@ -21,6 +21,6 @@ spec:
         io.kompose.service: discount-api
     spec:
       containers:
-        - image: discountapi
-          name: discount.api
+        - image: firstfiddler01/discountapi:v1
+          name: discount-api
       restartPolicy: Always

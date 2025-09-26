@@ -21,9 +21,34 @@ spec:
         io.kompose.service: rabbitmq
     spec:
       containers:
-        - env:
+        - name: rabbitmq
+          image: rabbitmq:3.13-management
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 5672   # AMQP
+            - containerPort: 15672  # Management UI
+          env:
+            - name: RABBITMQ_DEFAULT_USER
+              value: admin
+            - name: RABBITMQ_DEFAULT_PASS
+              value: Pass123!
             - name: RABBITMQ_DEFAULT_VHOST
               value: my_vhost
-          image: rabbitmq:3-management
-          name: rabbitmq
-      restartPolicy: Always
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: rabbitmq
+spec:
+  selector:
+    app: rabbitmq
+  ports:
+    - name: amqp
+      port: 5672
+      targetPort: 5672
+      nodePort: 30072
+    - name: management
+      port: 15672
+      targetPort: 15672
+      nodePort: 31672
+  type: NodePort
